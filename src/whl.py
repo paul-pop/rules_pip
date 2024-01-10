@@ -72,12 +72,14 @@ def install_package(pkg, directory, pip_args):
         "--no-deps",
         "--ignore-requires-python",
         "--use-deprecated=legacy-resolver",
+        "--no-cache-dir",
         pkg,
     ] + pip_args
     cmd = create_command("install")
     cmd.main(pip_args)
 
     # need dist-info directory for pkg_resources to be able to find the packages
+    print(print(glob.glob(os.path.join(directory, "*.dist-info"))))
     dist_info = glob.glob(os.path.join(directory, "*.dist-info"))[0]
     # fix namespace packages by adding proper __init__.py files
     namespace_packages = os.path.join(dist_info, "namespace_packages.txt")
